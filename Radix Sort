@@ -1,0 +1,54 @@
+#include<stdio.h>
+int maior_n (int a[], int n){
+   int maior = a[0];
+   for (int i = 1; i < n; i++)
+      if (a[i] > maior)
+         maior = a[i];
+   return maior;
+}
+void radix_sort (int a[], int n){
+   int balde[10][10], balde_cnt[10];
+   int i, j, k, r, max_leitura = 0, divisor = 1, p10, leitura;
+   p10 = maior_n (a, n);
+   while (p10 > 0){
+      max_leitura++;
+      p10 /= 10;
+   }
+   for (leitura = 0; leitura < max_leitura; leitura++){
+      for (i = 0; i < 10; i++){
+         balde_cnt[i] = 0;
+      }
+      for (i = 0; i < n; i++){
+         r = (a[i] / divisor) % 10;
+         balde[r][balde_cnt[r]] = a[i];
+         balde_cnt[r] += 1;
+      }
+      i = 0;
+      for (k = 0; k < 10; k++){
+         for (j = 0; j < balde_cnt[k]; j++){
+            a[i] = balde[k][j];
+            i++;
+         }
+      }
+      divisor *= 10;
+      printf ("Após leitura número %d : ", leitura + 1);
+      for (i = 0; i < n; i++)
+         printf ("%d ", a[i]);
+      printf ("\n");
+   }
+}
+int main (){
+   int i, n, a[10];
+   printf ("Insira a quantidade de itens a serem ordenados ");
+   scanf ("%d", &n);
+   printf ("Insira os itens: ");
+   for (i = 0; i < n; i++){
+      scanf ("%d", &a[i]);
+   }
+   radix_sort (a, n);
+   printf ("Itens ordenados: ");
+   for (i = 0; i < n; i++)
+      printf ("%d ", a[i]);
+   printf ("\n");
+   return 0;
+}
